@@ -7,7 +7,7 @@
 ├── style.css           # my design rules
 ├── script.js           # future interactivity
 ├── /assets             # public static assets
-│   ├──
+│   ├── LinkedinPic.jpeg
 │   └──
 ├── .gitignore
 └── README.md
