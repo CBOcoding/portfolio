@@ -1,0 +1,25 @@
+/* 1. The Box Model Reset */
+*, *::before, *::after {
+    box-sizing: border-box; /* The width and height properties include the content, padding, and border, but do not include the margin. Note that padding and border will be inside of the box. */
+    margin: 0;
+    padding: 0;
+}
+
+/* 2. Improve media defaults */
+img, picture, video, canvas, svg {
+    display: block; /* The element generates a block box, generating line breaks both before and after the element when in the normal flow. */
+    max-width: 100%;
+}
+
+/* 3. Remove default list styles */
+ul, ol {
+    list-style: none; /* no dot or square before the list */
+}
+
+/* 4. Standardize line height and text rendering */
+body {
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased; /* For Mac & iOS, makes the font pixels look smoother and thinner. */
+    min-height: 100vh; /* Viewport Height. 100vh means 100% of the height of the screen. */
+	/* Even if there is only one sentence on this page, make the body at least as tall as the entire screen. */
+}
