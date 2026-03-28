@@ -1,13 +1,13 @@
-// 1. Select the Form and the Result display area from the HTML using their IDs
+// Select the Form and the Result display area from the HTML using their IDs
 const form = document.getElementById("form");
 const result = document.getElementById("result");
 
-// 2. Listen for the 'submit' event (when the user clicks the button or presses Enter)
+// Listen for the 'submit' event
 form.addEventListener("submit", function (e) {
   const submitBtn = form.querySelector("button");
   submitBtn.disabled = true;
 
-  // 3. STOP the browser's default behavior.
+  // STOP the browser's default behavior.
   // Normally, a browser refreshes the page on submit. This line keeps the user exactly where they are.
   e.preventDefault();
 
@@ -65,3 +65,29 @@ form.addEventListener("submit", function (e) {
       submitBtn.disabled = false; //re-enable the form
     });
 });
+
+// Horizontal Scroll Buttons Logic
+const scrollContainer = document.getElementById("projectContainer");
+const scrollLeft = document.getElementById("scrollLeft");
+const scrollRight = document.getElementById("scrollRight");
+
+if (scrollContainer && scrollLeft && scrollRight) {
+  scrollRight.addEventListener("click", () => {
+    scrollContainer.scrollBy({ left: 320, behavior: "smooth" });
+  });
+
+  scrollLeft.addEventListener("click", () => {
+    scrollContainer.scrollBy({ left: -320, behavior: "smooth" });
+  });
+
+  scrollContainer.addEventListener("scroll", () => {
+    // Show/hide left button if at the start
+    scrollLeft.style.opacity = scrollContainer.scrollLeft > 10 ? "1" : "0";
+    scrollLeft.style.pointerEvents = scrollContainer.scrollLeft > 10 ? "auto" : "none";
+
+    // Show/hide right button if at the end
+    const maxScroll = scrollContainer.scrollWidth - scrollContainer.clientWidth;
+    scrollRight.style.opacity = scrollContainer.scrollLeft < maxScroll - 10 ? "1" : "0";
+    scrollRight.style.pointerEvents = scrollContainer.scrollLeft < maxScroll - 10 ? "auto" : "none";
+  });
+}
