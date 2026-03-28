@@ -23,3 +23,108 @@ body {
     min-height: 100vh; /* Viewport Height. 100vh means 100% of the height of the screen. */
 	/* Even if there is only one sentence on this page, make the body at least as tall as the entire screen. */
 }
+
+
+.main-footer {
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column; /* Stacks children vertically */
+    align-items: center;    /* Centers them horizontally */
+    gap: 20px;              /* Adds space between the blocks */
+    background-color: #f9f9f9; /* Light background for visibility */
+    border-top: 1px solid #eaeaea;
+}
+
+.social-links {
+    display: flex;
+    gap: 15px; /* Space between the two icons */
+}
+
+.social-links svg {
+    transition: color 0.3s ease, transform 0.3s ease;
+    color: #555; /* Default icon color */
+}
+
+.social-links a:hover svg {
+    color: #0070f3; /* Vercel Blue on hover */
+    transform: translateY(-3px); /* Small bounce effect */
+}
+
+#contact {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+}
+
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.contact-form input,
+.contact-form textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-family: inherit; /* Keeps the body font */
+}
+
+.contact-form textarea {
+    height: 150px;
+    resize: vertical; /* Allows user to grow the box height only */
+}
+
+.submit-button {
+    background-color: #0070f3;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1rem;
+    transition: background 0.3s;
+}
+
+.submit-button:hover {
+    background-color: #0056b3;
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.85rem;
+    color: #666;
+}
+
+#result {
+    min-height: 24px; /* Reserves space for the message even when it's empty */
+    margin-top: 10px;
+    font-size: 14px;  /* Keep it readable but smaller than main text */
+}
+
+.footer-nav {
+    display: flex;
+    gap: 20px;
+}
+
+.footer-nav a {
+    text-decoration: none;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.copyright {
+    font-size: 0.8rem;
+    color: #888;
+}
+
+.copyright a {
+    color: inherit;
+    font-weight: bold;
+}
