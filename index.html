@@ -9,33 +9,54 @@
 	<meta name="description" content="Here you can explore my skills and see how I’ve applied them in my projects." data-next-head="">
 </head>
 <body>
-	<header>
-		<nav>
-			<ul>
-				<li><a href="#home">Home</a></li>
-				<li><a href="#projects">Projects</a></li>
-				<li><a href="#contact">Contact</a></li>
-			</ul>
-			<button id="themeToggle">🌙</button>
-		</nav>
-	</header>
-
-	<section id="home">
-        <div class="home-text">
-            <p class="greetings">Ciao! I'm Claudio!</p>
-            <h1>Software Engineer</h1>
-            <p>with experience in web development using JavaScript and React, mobile app development with AI and React Native, and software development using C and C++.</p>
-            <p>Expert in managing cross-platform environments (macOS, Linux, Windows) with a focus on deploying AI Agents and custom automations to streamline workflows.</p>
-            <p>Outside of code, I bridge the gap between digital and physical worlds by designing functional components in Fusion 360 and bringing them to life through 3D printing.</p>
+<header>
+    <nav>
+        <div class="logo"></div>
+        <ul class="nav-links">
+            <li><a href="#home" data-en="Home" data-it="Home">Home</a></li>
+            <li><a href="#projects" data-en="Projects" data-it="Progetti">Projects</a></li>
+            <li><a href="#contact" data-en="Contact" data-it="Contatti">Contact</a></li>
+        </ul>
+        <div class="header-actions">
+            <button id="langToggle" class="lang-btn">IT</button>
+            <!-- <button id="themeToggle">🌙</button> -->
         </div>
+    </nav>
+</header>
 
-        <div class="home-photo">
-            <img id="my-photo" src="/assets/LinkedinPic.jpeg" loading="lazy" alt="my photo">
+<section id="home">
+    <div class="home-text">
+        <p class="greetings" data-en="Ciao! I'm Claudio!" data-it="Ciao! Sono Claudio!">
+            Ciao! I'm Claudio!
+        </p>
+        <h1 data-en="Software Engineer" data-it="Software Engineer">
+            Software Engineer
+        </h1>
+        <div class="bio">
+            <p data-en="with experience in web development using JavaScript and React, mobile app development with AI and React Native, and software development using C and C++."
+               data-it="con esperienza nello sviluppo web utilizzando JavaScript e React, sviluppo di app mobili con AI e React Native, e sviluppo software in C e C++.">
+                with experience in web development using JavaScript and React, mobile app development with AI and React Native, and software development using C and C++.
+            </p>
+            <p data-en="Expert in managing cross-platform environments (macOS, Linux, Windows) with a focus on deploying AI Agents and custom automations to streamline workflows."
+               data-it="Esperto nella gestione di ambienti cross-platform (macOS, Linux, Windows) con un focus sull'implementazione di Agenti AI e automazioni personalizzate.">
+                Expert in managing cross-platform environments (macOS, Linux, Windows) with a focus on deploying AI Agents and custom automations to streamline workflows.
+            </p>
+            <p data-en="Outside of code, I bridge the gap between digital and physical worlds by designing functional components in Fusion 360 and bringing them to life through 3D printing."
+               data-it="Oltre al codice, unisco il mondo digitale a quello fisico progettando componenti su Fusion 360 e realizzandoli con la stampa 3D.">
+                Outside of code, I bridge the gap between digital and physical worlds by designing functional components in Fusion 360 and bringing them to life through 3D printing.
+            </p>
         </div>
-	</section>
+    </div>
+
+    <div class="home-photo">
+        <img id="my-photo" src="/assets/LinkedinPic.jpeg" loading="lazy" alt="Claudio Borromei">
+    </div>
+</section>
 
 	<section id="skills">
-		<h1>My Skills</h1>
+		<h1 data-en="My Skills" data-it="Le Skills">
+            My Skills
+        </h1>
         <div class="skills-box">
             <div class="skill-container">
                 <p class="skill">JavaScript</p>
@@ -76,7 +97,9 @@
 	</section>
 
 	<section id="projects">
-		<h1>My Projects</h1>
+		<h1 data-en="My Projects" data-it="I Progetti">
+            My Projects
+        </h1>
         <div class="projects-container-relative">
             <div class="scroll-controls">
                 <button id="scrollLeft" class="control-btn" aria-label="Scroll left">←</button>
@@ -124,8 +147,13 @@
 	</section>
 
 <section id="contact">
-    <h1>Get in touch</h1>
-    <p class="get-in-touch-message">Searching for a developer who actually comments their code and never stops learning? Found me! Let’s chat.</p>
+    <h1 data-en="Get in touch" data-it="Contattami">
+        Get in touch
+    </h1>
+    <p class="get-in-touch-message"
+    data-en="Searching for a developer who actually comments their code and never stops learning? Found me! Let’s chat."
+    data-it="Stai cercando un developer che effettivamente commenta il codice ed impara sempre nuove cose? Trovato! Sentiamoci">
+    Searching for a developer who actually comments their code and never stops learning? Found me! Let’s chat.</p>
 
     <form id="form" class="contact-form">
 
@@ -145,7 +173,10 @@
 
         <div class="checkbox-container">
             <input type="checkbox" id="consent" name="consent" required>
-            <label for="consent">I consent to being contacted for professional opportunities.</label>
+            <label for="consent"
+            data-en="I consent to being contacted for professional opportunities."
+            data-it="Acconsento ad essere contattato per opportunitá professionali.">
+            I consent to being contacted for professional opportunities.</label>
         </div>
 
         <button type="submit" class="submit-button">Submit</button>
@@ -169,9 +200,9 @@
     </div>
 
     <nav class="footer-nav">
-        <a href="#home">Home</a>
-        <a href="#projects">Projects</a>
-        <a href="#contact">Contact</a>
+        <a href="#home" data-en="Home" data-it="Home">Home</a>
+        <a href="#projects" data-en="Projects" data-it="Progetti">Projects</a>
+        <a href="#contact" data-en="Contact" data-it="Contatti">Contact</a>
     </nav>
 
     <p class="copyright">Designed & Coded by <a href="https://www.linkedin.com/in/claudioborromei/" target="_blank">Borromei Claudio</a></p>

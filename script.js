@@ -11,20 +11,20 @@ form.addEventListener("submit", function (e) {
   // Normally, a browser refreshes the page on submit. This line keeps the user exactly where they are.
   e.preventDefault();
 
-  // 4. Extract the data currently typed into the form fields
+  // Extract the data currently typed into the form fields
   const formData = new FormData(form);
 
-  // 5. Convert that data into a plain JavaScript Object (e.g., {name: "Claudio", email: "..."})
+  // Convert that data into a plain JavaScript Object (e.g., {name: "Claudio", email: "..."})
   const object = Object.fromEntries(formData);
 
-  // 6. Convert that Object into a JSON string.
+  // Convert that Object into a JSON string.
   // APIs (like Web3Forms) usually require data to be sent as a string, not a live object.
   const json = JSON.stringify(object);
 
-  // 7. Give the user immediate feedback so they don't click "Submit" ten times.
+  // Give the user immediate feedback so they don't click "Submit" ten times.
   result.innerHTML = "Please wait...";
 
-  // 8. The FETCH API: This sends the actual "package" to the Web3Forms server
+  // The FETCH API: This sends the actual "package" to the Web3Forms server
   fetch("https://api.web3forms.com/submit", {
     method: "POST", // 'POST' means we are SENDING data
     headers: {
@@ -33,12 +33,12 @@ form.addEventListener("submit", function (e) {
     },
     body: json, // The actual data string we created in step 6
   })
-    // 9. After the server responds...
+    // After the server responds...
     .then(async (response) => {
       // Read the response data coming back from the server
       let json = await response.json();
 
-      // 10. Check if the server said "OK" (Status 200)
+      //  Check if the server said "OK" (Status 200)
       if (response.status == 200) {
         result.innerHTML = "Success! Message sent.";
         result.style.color = "green";
@@ -49,16 +49,16 @@ form.addEventListener("submit", function (e) {
         result.style.color = "red";
       }
     })
-    // 11. CATCH is for major errors (like if the user loses internet connection mid-send)
+    //  CATCH is for major errors (like if the user loses internet connection mid-send)
     .catch((error) => {
       console.log(error);
       result.innerHTML = "Something went wrong!";
     })
-    // 12. This block runs NO MATTER WHAT (success or failure)
+    //  This block runs NO MATTER WHAT (success or failure)
     .then(function () {
       form.reset(); // Clear the Name, Email, and Message boxes
 
-      // 13. SET TIMEOUT: Wait 5000 milliseconds (5 seconds), then hide the message
+      //  SET TIMEOUT: Wait 5000 milliseconds (5 seconds), then hide the message
       setTimeout(() => {
         result.innerHTML = "";
       }, 5000);
@@ -91,3 +91,23 @@ if (scrollContainer && scrollLeft && scrollRight) {
     scrollRight.style.pointerEvents = scrollContainer.scrollLeft < maxScroll - 10 ? "auto" : "none";
   });
 }
+
+
+/* LANGUAGE TOGGLE LOGIC
+   Loops through all elements with data-en/it and swaps content
+*/
+const langBtn = document.getElementById('langToggle');
+let currentLang = 'en'; // Start in English
+
+langBtn.addEventListener('click', () => {
+    // Toggle the variable
+    currentLang = currentLang === 'en' ? 'it' : 'en';
+
+    // Update the button text to show the OTHER option
+    langBtn.innerText = currentLang === 'en' ? 'IT' : 'EN';
+
+    // Find all elements with translation data and swap them
+    document.querySelectorAll('[data-en]').forEach(el => {
+        el.innerText = el.getAttribute(`data-${currentLang}`);
+    });
+});
