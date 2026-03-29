@@ -1,3 +1,8 @@
+/* ==========================================================================
+   GLOBAL RESET & CORE STYLES
+   Standardizing the box model and typography across browsers.
+==========================================================================
+*/
 /* The Box Model Reset */
 *,
 *::before,
@@ -23,6 +28,11 @@ ol {
   list-style: none; /* no dot or square before the list */
 }
 
+/* ==========================================================================
+   THEME CONFIGURATION
+   Centralized variables for instant Light/Dark mode switching.
+==========================================================================
+*/
 /* Colors for Light Mode (Default) */
 :root {
   --bg-color: #ffffff;
@@ -43,6 +53,17 @@ ol {
   --secondary-bg: #1e293b;
   --card-bg: #1e293b;
   --border: #334155;
+}
+
+/* Dims images in dark mode */
+[data-theme="dark"] #my-photo,
+[data-theme="dark"] .project-photo {
+    filter: brightness(0.8);
+    transition: filter 0.3s ease;
+}
+
+[data-theme="dark"] .project-element:hover .project-photo {
+    filter: brightness(1);
 }
 
 /* Standardize line height and text rendering */
@@ -148,12 +169,10 @@ nav {
 }
 
 .home-text .bio p {
-  text-align: center;
+  text-align: left;
   margin-bottom: 15px;
   max-width: 600px; /* Keeps text lines readable length */
   color: var(--text-muted);
-  margin-left: auto;
-  margin-right: auto;
 }
 
 /* Photo Container & Responsive Alignment */
