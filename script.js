@@ -111,3 +111,30 @@ langBtn.addEventListener('click', () => {
         el.innerText = el.getAttribute(`data-${currentLang}`);
     });
 });
+
+
+/* THEME TOGGLE LOGIC
+   Uses 'data-theme' attribute on the <html> tag to swap variables
+*/
+const themeToggle = document.getElementById('themeToggle');
+const currentTheme = localStorage.getItem('theme');
+
+// Check for saved user preference
+if (currentTheme) {
+    document.documentElement.setAttribute('data-theme', currentTheme);
+    if (currentTheme === 'dark') themeToggle.innerText = '☀️';
+}
+
+themeToggle.addEventListener('click', () => {
+    let theme = document.documentElement.getAttribute('data-theme');
+
+    if (theme === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'light');
+        localStorage.setItem('theme', 'light');
+        themeToggle.innerText = '🌙';
+    } else {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+        themeToggle.innerText = '☀️';
+    }
+});

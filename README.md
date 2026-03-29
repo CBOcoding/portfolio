@@ -16,3 +16,4 @@
 # Initial Tech Stack
 - HTML
 - CSS
+- JavaScript

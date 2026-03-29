@@ -23,6 +23,28 @@ ol {
   list-style: none; /* no dot or square before the list */
 }
 
+/* Colors for Light Mode (Default) */
+:root {
+  --bg-color: #ffffff;
+  --text-main: #1a1a1a;
+  --text-muted: #4b5563;
+  --accent: #4f46e5; /* Indigo */
+  --secondary-bg: #f3f4f6; /* Light gray for greetings/skills */
+  --card-bg: #ffffff;
+  --border: #eaeaea;
+}
+
+/* Colors for Dark Mode */
+[data-theme="dark"] {
+  --bg-color: #0f172a; /* Deep navy */
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --accent: #818cf8; /* Lighter indigo for dark bg */
+  --secondary-bg: #1e293b;
+  --card-bg: #1e293b;
+  --border: #334155;
+}
+
 /* Standardize line height and text rendering */
 body {
   line-height: 1.5;
@@ -30,105 +52,135 @@ body {
   min-height: 100vh; /* Viewport Height. 100vh means 100% of the height of the screen. */
   /* Even if there is only one sentence on this page, make the body at least as tall as the entire screen. */
   padding: 0 5%;
-    font-family: sans-serif;
+  font-family: sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease; /* Smooth fade */
 }
 
 /* Sticky Header */
 header {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    background: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(8px);
-    padding: 20px 0;
-    border-bottom: 1px solid #eaeaea;
-    margin-bottom: 40px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
+  padding: 20px 0;
+  border-bottom: 1px solid #eaeaea;
+  margin-bottom: 40px;
+  background: var(--bg-color);
+  border-bottom: 1px solid var(--border);
 }
 
 nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .nav-links {
-    display: flex;
-    gap: 30px;
-    list-style: none;
+  display: flex;
+  gap: 30px;
+  list-style: none;
 }
 
 .nav-links a {
-    text-decoration: none;
-    color: #333;
-    font-weight: 500;
+  text-decoration: none;
+  color: var(--text-main);
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: var(--accent);
 }
 
 .header-actions {
-    display: flex;
-    gap: 15px;
+  display: flex;
+  gap: 15px;
 }
 
 .lang-btn {
-    cursor: pointer;
-    background: #f0f0f0;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 5px;
-    font-weight: bold;
+  cursor: pointer;
+  background: var(--secondary-bg);
+  color: var(--text-main);
+  border: 1px solid var(--border);
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+#themeToggle {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding: 5px;
+  transition: transform 0.3s ease;
+  color: var(--text-main); /* The icon follow the theme text color */
+}
+
+#themeToggle:hover {
+  transform: scale(1.1);
 }
 
 /* Home Section Flexbox Logic */
 #home {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-    gap: 60px;
-    min-height: 20vh;
-    padding-bottom: 50px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 60px;
+  min-height: 20vh;
+  padding-bottom: 50px;
 }
 
 .home-text {
-    flex: 2 1 400px; /* Grow, Shrink, Basis */
+  flex: 2 1 400px; /* Grow, Shrink, Basis */
 }
 
 .home-text h1 {
-    font-size: 3rem;
-    margin: 15px 0;
-    line-height: 1.1;
+  font-size: 3rem;
+  margin: 15px 0;
+  line-height: 1.1;
 }
 
 .home-text .bio p {
-    margin-bottom: 15px;
-    color: #444;
-    max-width: 600px;      /* Keeps text lines readable length */
+  text-align: center;
+  margin-bottom: 15px;
+  max-width: 600px; /* Keeps text lines readable length */
+  color: var(--text-muted);
+  margin-left: auto;
+  margin-right: auto;
 }
-
 
 /* Photo Container & Responsive Alignment */
 
 .home-photo {
-    flex: 1 1 300px;
-    display: flex;
-    justify-content: center;
+  flex: 1 1 300px;
+  display: flex;
+  justify-content: center;
 }
 
 #my-photo {
-    width: 100%;
-    max-width: 280px;
-    height: auto;
-    border-radius: 24px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 280px;
+  height: auto;
+  border-radius: 24px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  border: 4px solid var(--secondary-bg);
 }
 
 .greetings {
-    background: #f3f4f6;
-    padding: 8px 16px;
-    border-radius: 8px;
-    width: fit-content;
-    font-weight: 600;
+  background-color: var(--secondary-bg);
+  color: var(--text-main);
+  border-radius: 8px;
+  padding: 12px 20px;
+  width: fit-content;
+  font-weight: 600;
 }
-
 
 .horizontal-scroll {
   display: flex;
@@ -138,7 +190,7 @@ nav {
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none; /* Firefox: Hides scrollbar */
-  -ms-overflow-style: none;  /* IE and Edge: Hides scrollbar */
+  -ms-overflow-style: none; /* IE and Edge: Hides scrollbar */
 }
 
 /* Chrome, Safari and Opera: Hides scrollbar */
@@ -146,20 +198,28 @@ nav {
   display: none;
 }
 
+#skills {
+  margin-bottom: 40px; /* More space between the Skills section and the Projects title */
+  text-align: center;
+
+}
+
 .skills-box {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    justify-content: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  padding-top: 20px;
 }
 
 .skill-container {
-    background-color: #f0f0f0;
-    padding: 8px 16px;
-    border-radius: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  background-color: var(--secondary-bg);
+  padding: 8px 16px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-main);
 }
 
 .projects-container-relative {
@@ -168,47 +228,44 @@ nav {
 }
 
 .scroll-controls {
-    position: absolute;
-    top: 50%;
-    left: 0;
-    right: 0;
-    transform: translateY(-50%);
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    padding: 0 10px;
-    pointer-events: none;
-    z-index: 20;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  transform: translateY(-50%);
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 10px;
+  pointer-events: none;
+  z-index: 20;
 }
 
 .control-btn {
-    background: rgba(0, 112, 243, 0.4); /* Semi-transparent */
-    color: white;
+    background: var(--accent);
+    color: #ffffff;
     border: none;
     border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    cursor: pointer;
-    font-size: 1.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background 0.3s, transform 0.2s, opacity 0.3s;
-    pointer-events: auto;
-    backdrop-filter: blur(4px);
+    width: 44px;
+    height: 44px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    opacity: 0.8;
+    transition: all 0.3s ease;
 }
 
 .control-btn:hover {
-    transform: scale(1.1);
-    background: rgba(0, 112, 243, 0.8);
+    opacity: 1;
+    transform: translateY(-50%) scale(1.1); /* Keeps vertical centering while scaling */
+    background: var(--accent);
+    filter: brightness(1.1);
 }
 
 #scrollLeft {
-    opacity: 0; /* JS handles this */
+  opacity: 0; /* JS handles this */
 }
 
 #scrollRight {
-    opacity: 1; /* JS handles this */
+  opacity: 1; /* JS handles this */
 }
 
 /* Remove the specific mobile hide rule */
@@ -224,9 +281,11 @@ nav {
 /* Add a subtle hint that more content exists on the right */
 #projects {
   position: relative;
+  text-align: center;
 }
 
 #projects::after {
+  display: none;
   content: "";
   position: absolute;
   top: 0;
@@ -234,18 +293,19 @@ nav {
   width: 50px;
   height: 100%;
   background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.1));
-  pointer-events: none; /* Allows clicking through the gradient */
+  pointer-events: none;
 }
 
 .project-element {
-    background-color: #0070f3;
-    border-radius: 24px;
-    flex-direction: column;
-    display: flex;
-    flex: 0 0 300px; /* Keeps cards at 300px wide and prevents shrinking */
-    scroll-snap-align: start;
-    overflow: hidden;
-    color: white;
+  background-color: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  flex: 0 0 320px;
+  overflow: hidden;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
 .project-photo {
@@ -277,18 +337,39 @@ nav {
   }
 }
 
+.project-element:hover {
+  transform: translateY(-8px); /* Subtle lift on hover */
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  border-color: var(--accent); /* Highlights the card with Indigo */
+}
+
+.project-info {
+  padding: 20px;
+}
+
+.project-info h2 {
+  color: var(--text-main);
+  font-size: 1.25rem;
+  margin-bottom: 10px;
+}
+
 .project-skill {
-  font-size: revert-layer;
+  font-size: 0.85rem;
+  color: var(--accent);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .main-footer {
-  padding: 40px 20px;
+  margin-top: 20px;
+  padding: 20px;
   display: flex;
   flex-direction: column; /* Stacks children vertically */
   align-items: center; /* Centers them horizontally */
   gap: 20px; /* Adds space between the blocks */
-  background-color: #f9f9f9; /* Light background for visibility */
-  border-top: 1px solid #eaeaea;
+  background-color: var(--bg-color); /* Match site background */
+  border-top: 1px solid var(--border);
 }
 
 .social-links {
@@ -304,14 +385,17 @@ nav {
 }
 
 .social-links a:hover svg {
-  color: #0070f3; /* Vercel Blue on hover */
+  color: var(--accent);
   transform: translateY(-3px); /* Small bounce effect */
 }
 
+/* Less padding between Submit and Footer */
 #contact {
+  text-align: center;
+  margin: auto;
   max-width: 600px;
-  margin: 50px auto;
-  padding: 20px;
+  padding-bottom: 20px; /* Reduced from default */
+  margin-bottom: 0; /* Removes extra bottom margin */
 }
 
 .contact-form {
@@ -346,6 +430,7 @@ nav {
   font-weight: bold;
   font-size: 1rem;
   transition: background 0.3s;
+  margin-bottom: 0px;
 }
 
 .submit-button:hover {
@@ -355,9 +440,24 @@ nav {
 .checkbox-container {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
+  margin-top: 10px;
   font-size: 0.85rem;
-  color: #666;
+  cursor: pointer;
+}
+
+.checkbox-container input[type="checkbox"] {
+  margin: 0; /* Removes default browser margins */
+  cursor: pointer;
+  width: 16px; /* Standardizes size */
+  height: 16px;
+}
+
+.checkbox-container label {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.2;
+  cursor: pointer;
 }
 
 #result {
@@ -373,7 +473,7 @@ nav {
 
 .footer-nav a {
   text-decoration: none;
-  color: #666;
+  color: var(--text-muted);
   font-size: 0.9rem;
 }
 
