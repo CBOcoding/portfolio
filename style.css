@@ -251,13 +251,13 @@ nav {
 .scroll-controls {
   position: absolute;
   top: 50%;
-  left: 0;
-  right: 0;
+  left: -20px;
+  right: -20px;
   transform: translateY(-50%);
   display: flex;
   justify-content: space-between;
-  width: 100%;
-  padding: 0 10px;
+  width: calc(100% + 40px);
+  padding: 0;
   pointer-events: none; /* Allows scrolling the container, but we need to re-enable it for child buttons */
   z-index: 20;
 }
@@ -297,10 +297,9 @@ nav {
 /* Remove the specific mobile hide rule */
 @media (max-width: 600px) {
   .control-btn {
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
     font-size: 1.2rem;
-    background: rgba(0, 112, 243, 0.3); /* Even lighter on mobile */
     transform: none; /* Reset transform on mobile */
   }
 
@@ -387,6 +386,20 @@ nav {
 @media (max-width: 600px) {
   section {
     padding: 40px 20px;
+  }
+
+  .scroll-controls {
+    left: 0;
+    right: 0;
+    width: 100%;
+  }
+
+  .control-btn {
+    width: 44px;
+    height: 44px;
+    font-size: 1.2rem;
+    background: var(--accent);
+    opacity: 0.8;
   }
 
   .project-element {
