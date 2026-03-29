@@ -153,13 +153,15 @@ nav {
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 60px;
+  gap: 40px; /* Reduced gap since max-width will handle spacing */
   min-height: 20vh;
   padding-bottom: 50px;
+  max-width: 1200px; /* Limits spread on ultra-wide screens */
+  margin: 0 auto; /* Centers the whole container */
 }
 
 .home-text {
-  flex: 2 1 400px; /* Grow, Shrink, Basis */
+  flex: 1 1 500px; /* Adjusted basis for better balance */
 }
 
 .home-text h1 {
@@ -220,7 +222,7 @@ nav {
 #skills {
   margin-bottom: 40px; /* More space between the Skills section and the Projects title */
   text-align: center;
-
+  padding-top: 20px;
 }
 
 .skills-box {
@@ -345,11 +347,40 @@ nav {
   box-shadow: 0 11px 25px 1px #00000021;
 }
 
-#sentence {
-  margin-top: auto;
+#tech-stack {
   text-align: center;
-  padding: 15px 0px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+#tech-stack h2 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  color: var(--text-main);
+}
+
+.tech-stack-subtitle {
   color: var(--text-muted);
+  margin-bottom: 20px;
+  font-size: 1.1rem;
+}
+
+.tech-stack-container {
+  display: flex;
+  justify-content: center;
+}
+
+.tech-stack-list {
+  text-align: left;
+  display: inline-block;
+  list-style: disc; /* Re-enable bullets */
+  padding-left: 20px; /* Space for bullets */
+  color: var(--text-muted);
+  line-height: 1.8;
+}
+
+.tech-stack-list li {
+  margin-bottom: 8px;
 }
 
 /* Mobile-specific adjustments */
@@ -389,12 +420,19 @@ nav {
   margin-bottom: 10px;
 }
 
-.project-skill {
+.project-skill,
+a.project-skill {
   font-size: 0.85rem;
   color: var(--accent);
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  text-decoration: none;
+  display: inline-block;
+}
+
+a.project-skill:hover {
+  text-decoration: underline;
 }
 
 .main-footer {
