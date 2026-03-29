@@ -2,7 +2,7 @@
  * CLAUDIO BORROMEI PORTFOLIO ENGINE
  * * Contents:
  * 1. Contact Form Handling (Web3Forms API)
- * 2. Horizontal Scroll Control (Projects Section)
+ * 2. Horizontal Scroll Control (Dot Carousel + Auto-play)
  * 3. Internationalization (EN/IT Language Toggle)
  * 4. Theme Management (Light/Dark Mode Persistence)
  */
@@ -57,48 +57,142 @@ async function handleFormSubmit(e) {
 }
 
 /* ==========================================================================
-   2. HORIZONTAL SCROLL CONTROL
-   Manages button visibility and smooth scrolling for project cards.
+   2. HORIZONTAL SCROLL CONTROL (DOTS + AUTOPLAY)
+   Dot navigation + automatic back-and-forth carousel for projects.
+   Works the same on mobile and desktop.
    ========================================================================== */
 const projectSections = document.querySelectorAll(".projects-container-relative");
 
 projectSections.forEach(section => {
     const scrollContainer = section.querySelector(".projectContainer");
-    const scrollLeft = section.querySelector(".scrollLeft");
-    const scrollRight = section.querySelector(".scrollRight");
+    const dotsContainer = section.querySelector(".dot-indicators");
 
-    if (scrollContainer && scrollLeft && scrollRight) {
-        scrollRight.addEventListener("click", () => {
-            scrollContainer.scrollBy({ left: 320, behavior: "smooth" });
+    if (!scrollContainer || !dotsContainer) return;
+
+    const projects = scrollContainer.querySelectorAll(".project-element");
+    if (projects.length === 0) return;
+
+    let dots = [];
+    let currentIndex = 0;
+    let direction = 1; // 1 = forward, -1 = backward
+    let autoPlayId;
+
+    const getTargetOffset = (index) => {
+        const target = projects[index];
+        return target.offsetLeft - scrollContainer.offsetLeft;
+    };
+
+    const setActiveDot = (activeIndex) => {
+        dots.forEach((dot, i) => {
+            dot.classList.toggle("active", i === activeIndex);
+        });
+    };
+
+    const scrollToIndex = (index, smooth = true) => {
+        currentIndex = index;
+        const left = getTargetOffset(currentIndex);
+        scrollContainer.scrollTo({
+            left,
+            behavior: smooth ? "smooth" : "auto",
+        });
+        setActiveDot(currentIndex);
+    };
+
+    const findClosestIndex = () => {
+        let closest = 0;
+        let minDiff = Infinity;
+        const currentLeft = scrollContainer.scrollLeft;
+
+        projects.forEach((card, index) => {
+            const cardLeft = card.offsetLeft - scrollContainer.offsetLeft;
+            const diff = Math.abs(currentLeft - cardLeft);
+            if (diff < minDiff) {
+                minDiff = diff;
+                closest = index;
+            }
         });
 
-        scrollLeft.addEventListener("click", () => {
-            scrollContainer.scrollBy({ left: -320, behavior: "smooth" });
+        return closest;
+    };
+
+    const handleScroll = () => {
+        const closestIndex = findClosestIndex();
+        currentIndex = closestIndex;
+        setActiveDot(currentIndex);
+    };
+
+    const stopAutoPlay = () => {
+        if (autoPlayId) {
+            clearInterval(autoPlayId);
+            autoPlayId = undefined;
+        }
+    };
+
+    const startAutoPlay = () => {
+        if (autoPlayId || projects.length <= 1) return;
+
+        autoPlayId = setInterval(() => {
+            let next = currentIndex + direction;
+
+            if (next >= projects.length) {
+                // Hit the right end, bounce back
+                direction = -1;
+                next = projects.length - 2 >= 0 ? projects.length - 2 : 0;
+            } else if (next < 0) {
+                // Hit the left end, go forward
+                direction = 1;
+                next = projects.length > 1 ? 1 : 0;
+            }
+
+            scrollToIndex(next);
+        }, 4000); // Change project every 4 seconds
+    };
+
+    const createDots = () => {
+        dotsContainer.innerHTML = "";
+        dots = [];
+
+        projects.forEach((_, index) => {
+            const dot = document.createElement("button");
+            dot.type = "button";
+            dot.className = "dot";
+            dot.setAttribute("aria-label", `Go to project ${index + 1}`);
+
+            dot.addEventListener("click", () => {
+                stopAutoPlay();
+                scrollToIndex(index);
+                // Restart autoplay after manual selection
+                startAutoPlay();
+            });
+
+            dotsContainer.appendChild(dot);
+            dots.push(dot);
         });
 
-        scrollContainer.addEventListener("scroll", () => {
-            // Toggle visibility of scroll buttons based on position
-            const isAtStart = scrollContainer.scrollLeft <= 10;
-            const maxScroll = scrollContainer.scrollWidth - scrollContainer.clientWidth;
-            const isAtEnd = scrollContainer.scrollLeft >= maxScroll - 10;
+        setActiveDot(0);
+    };
 
-            scrollLeft.style.opacity = isAtStart ? "0" : "1";
-            scrollLeft.style.pointerEvents = isAtStart ? "none" : "auto";
+    createDots();
+    scrollToIndex(0, false);
 
-            scrollRight.style.opacity = isAtEnd ? "0" : "1";
-            scrollRight.style.pointerEvents = isAtEnd ? "none" : "auto";
-        });
+    // Keep dots in sync when user scrolls (e.g., touch swipe)
+    let scrollTimeout;
+    scrollContainer.addEventListener("scroll", () => {
+        // Throttle updates a bit for smoother behavior
+        if (scrollTimeout) cancelAnimationFrame(scrollTimeout);
+        scrollTimeout = requestAnimationFrame(handleScroll);
+    });
 
-        // Initialize button visibility
-        const isAtStart = scrollContainer.scrollLeft <= 10;
-        const maxScroll = scrollContainer.scrollWidth - scrollContainer.clientWidth;
-        const isAtEnd = scrollContainer.scrollLeft >= maxScroll - 10;
+    // Pause autoplay on interaction, resume after
+    ["mouseenter", "touchstart"].forEach(evt => {
+        scrollContainer.addEventListener(evt, stopAutoPlay);
+    });
 
-        scrollLeft.style.opacity = isAtStart ? "0" : "1";
-        scrollLeft.style.pointerEvents = isAtStart ? "none" : "auto";
-        scrollRight.style.opacity = isAtEnd ? "0" : "1";
-        scrollRight.style.pointerEvents = isAtEnd ? "none" : "auto";
-    }
+    ["mouseleave", "touchend"].forEach(evt => {
+        scrollContainer.addEventListener(evt, startAutoPlay);
+    });
+
+    startAutoPlay();
 });
 
 /* ==========================================================================
