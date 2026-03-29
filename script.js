@@ -60,32 +60,46 @@ async function handleFormSubmit(e) {
    2. HORIZONTAL SCROLL CONTROL
    Manages button visibility and smooth scrolling for project cards.
    ========================================================================== */
-const scrollContainer = document.getElementById("projectContainer");
-const scrollLeft = document.getElementById("scrollLeft");
-const scrollRight = document.getElementById("scrollRight");
+const projectSections = document.querySelectorAll(".projects-container-relative");
 
-if (scrollContainer && scrollLeft && scrollRight) {
-    scrollRight.addEventListener("click", () => {
-        scrollContainer.scrollBy({ left: 320, behavior: "smooth" });
-    });
+projectSections.forEach(section => {
+    const scrollContainer = section.querySelector(".projectContainer");
+    const scrollLeft = section.querySelector(".scrollLeft");
+    const scrollRight = section.querySelector(".scrollRight");
 
-    scrollLeft.addEventListener("click", () => {
-        scrollContainer.scrollBy({ left: -320, behavior: "smooth" });
-    });
+    if (scrollContainer && scrollLeft && scrollRight) {
+        scrollRight.addEventListener("click", () => {
+            scrollContainer.scrollBy({ left: 320, behavior: "smooth" });
+        });
 
-    scrollContainer.addEventListener("scroll", () => {
-        // Toggle visibility of scroll buttons based on position
+        scrollLeft.addEventListener("click", () => {
+            scrollContainer.scrollBy({ left: -320, behavior: "smooth" });
+        });
+
+        scrollContainer.addEventListener("scroll", () => {
+            // Toggle visibility of scroll buttons based on position
+            const isAtStart = scrollContainer.scrollLeft <= 10;
+            const maxScroll = scrollContainer.scrollWidth - scrollContainer.clientWidth;
+            const isAtEnd = scrollContainer.scrollLeft >= maxScroll - 10;
+
+            scrollLeft.style.opacity = isAtStart ? "0" : "1";
+            scrollLeft.style.pointerEvents = isAtStart ? "none" : "auto";
+
+            scrollRight.style.opacity = isAtEnd ? "0" : "1";
+            scrollRight.style.pointerEvents = isAtEnd ? "none" : "auto";
+        });
+
+        // Initialize button visibility
         const isAtStart = scrollContainer.scrollLeft <= 10;
         const maxScroll = scrollContainer.scrollWidth - scrollContainer.clientWidth;
         const isAtEnd = scrollContainer.scrollLeft >= maxScroll - 10;
 
         scrollLeft.style.opacity = isAtStart ? "0" : "1";
         scrollLeft.style.pointerEvents = isAtStart ? "none" : "auto";
-
         scrollRight.style.opacity = isAtEnd ? "0" : "1";
         scrollRight.style.pointerEvents = isAtEnd ? "none" : "auto";
-    });
-}
+    }
+});
 
 /* ==========================================================================
    3. INTERNATIONALIZATION (EN/IT)

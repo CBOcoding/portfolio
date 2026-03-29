@@ -256,7 +256,7 @@ nav {
   justify-content: space-between;
   width: 100%;
   padding: 0 10px;
-  pointer-events: none;
+  pointer-events: none; /* Allows scrolling the container, but we need to re-enable it for child buttons */
   z-index: 20;
 }
 
@@ -269,21 +269,26 @@ nav {
     height: 44px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     opacity: 0.8;
-    transition: all 0.3s ease;
+    transition: transform 0.3s ease, opacity 0.3s ease, background 0.3s ease, filter 0.3s ease;
+    pointer-events: auto; /* Ensure buttons are clickable since parent is pointer-events: none */
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .control-btn:hover {
     opacity: 1;
-    transform: translateY(-50%) scale(1.1); /* Keeps vertical centering while scaling */
+    transform: scale(1.1);
     background: var(--accent);
     filter: brightness(1.1);
 }
 
-#scrollLeft {
+.scrollLeft {
   opacity: 0; /* JS handles this */
 }
 
-#scrollRight {
+.scrollRight {
   opacity: 1; /* JS handles this */
 }
 
@@ -294,6 +299,11 @@ nav {
     height: 40px;
     font-size: 1.2rem;
     background: rgba(0, 112, 243, 0.3); /* Even lighter on mobile */
+    transform: none; /* Reset transform on mobile */
+  }
+
+  .control-btn:hover {
+    transform: scale(1.1); /* Standard scaling only */
   }
 }
 
@@ -333,6 +343,13 @@ nav {
   object-fit: cover;
   border-radius: 16px 16px 0 0;
   box-shadow: 0 11px 25px 1px #00000021;
+}
+
+#sentence {
+  margin-top: auto;
+  text-align: center;
+  padding: 15px 0px;
+  color: var(--text-muted);
 }
 
 /* Mobile-specific adjustments */
