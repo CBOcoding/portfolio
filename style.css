@@ -248,16 +248,41 @@ nav {
   width: 100%;
 }
 
+.dot-indicators {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin: 10px 0 0;
+}
+
+.dot-indicators .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background-color: var(--border);
+  opacity: 0.7;
+  transition:
+    background-color 0.25s ease,
+    transform 0.25s ease,
+    opacity 0.25s ease;
+}
+
+.dot-indicators .dot.active {
+  background-color: var(--accent);
+  opacity: 1;
+  transform: scale(1.2);
+}
+
 .scroll-controls {
   position: absolute;
   top: 50%;
-  left: 0;
-  right: 0;
+  left: -20px;
+  right: -20px;
   transform: translateY(-50%);
   display: flex;
   justify-content: space-between;
-  width: 100%;
-  padding: 0 10px;
+  width: calc(100% + 40px);
+  padding: 0;
   pointer-events: none; /* Allows scrolling the container, but we need to re-enable it for child buttons */
   z-index: 20;
 }
@@ -297,10 +322,9 @@ nav {
 /* Remove the specific mobile hide rule */
 @media (max-width: 600px) {
   .control-btn {
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
     font-size: 1.2rem;
-    background: rgba(0, 112, 243, 0.3); /* Even lighter on mobile */
     transform: none; /* Reset transform on mobile */
   }
 
@@ -331,7 +355,7 @@ nav {
   background-color: var(--card-bg);
   border: 1px solid var(--border);
   border-radius: 20px;
-  flex: 0 0 320px;
+  flex: 0 0 260px;
   overflow: hidden;
   transition:
     transform 0.3s ease,
@@ -341,7 +365,7 @@ nav {
 
 .project-photo {
   width: 100%;
-  height: 250px;
+  height: 230px;
   object-fit: cover;
   border-radius: 16px 16px 0 0;
   box-shadow: 0 11px 25px 1px #00000021;
@@ -389,14 +413,32 @@ nav {
     padding: 40px 20px;
   }
 
+  .scroll-controls {
+    left: 0;
+    right: 0;
+    width: 100%;
+  }
+
+  .control-btn {
+    width: 44px;
+    height: 44px;
+    font-size: 1.2rem;
+    background: var(--accent);
+    opacity: 0.8;
+  }
+
   .project-element {
-    flex: 0 0 75vw; /* Each card takes up 75% of the screen width */
+    flex: 0 0 68vw; /* Slightly thinner card on small screens */
     scroll-snap-align: center; /* Snap cards to the center of the screen */
   }
 
+  .project-photo {
+    height: 210px; /* Reduce vertical size of the card image on mobile */
+  }
+
   .horizontal-scroll {
-    padding-left: 12.5vw; /* Centers the first card when it snaps */
-    padding-right: 12.5vw;
+    padding-left: 8vw;  /* Extra room so the full card is visible */
+    padding-right: 8vw;
   }
 
   h1 {
