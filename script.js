@@ -2,7 +2,7 @@
  * CLAUDIO BORROMEI PORTFOLIO ENGINE
  * * Contents:
  * 1. Contact Form Handling (Web3Forms API)
- * 2. Horizontal Scroll Control (Dot Carousel + Auto-play)
+ * 2. Horizontal Scroll Control (Draggable Scrubber + Auto-play)
  * 3. Internationalization (EN/IT Language Toggle)
  * 4. Theme Management (Light/Dark Mode Persistence)
  */
@@ -57,35 +57,60 @@ async function handleFormSubmit(e) {
 }
 
 /* ==========================================================================
-   2. HORIZONTAL SCROLL CONTROL (DOTS + AUTOPLAY)
-   Dot navigation + automatic back-and-forth carousel for projects.
-   Works the same on mobile and desktop.
+   2. HORIZONTAL SCROLL CONTROL (DRAGGABLE SCRUBBER + AUTOPLAY)
+   Draggable scrollbar-style handle + automatic back-and-forth carousel
+   for projects. Works the same on mobile and desktop.
    ========================================================================== */
 const projectSections = document.querySelectorAll(".projects-container-relative");
 
 projectSections.forEach(section => {
     const scrollContainer = section.querySelector(".projectContainer");
-    const dotsContainer = section.querySelector(".dot-indicators");
+    const scrubber = section.querySelector(".scroll-scrubber");
 
-    if (!scrollContainer || !dotsContainer) return;
+    if (!scrollContainer || !scrubber) return;
 
     const projects = scrollContainer.querySelectorAll(".project-element");
     if (projects.length === 0) return;
 
-    let dots = [];
     let currentIndex = 0;
     let direction = 1; // 1 = forward, -1 = backward
     let autoPlayId;
+    let isDragging = false;
+    let dragStartX = 0;
+    let dragStartScrollLeft = 0;
+
+    scrubber.innerHTML = "";
+    const thumb = document.createElement("div");
+    thumb.className = "scroll-scrubber-thumb";
+    scrubber.appendChild(thumb);
 
     const getTargetOffset = (index) => {
         const target = projects[index];
         return target.offsetLeft - scrollContainer.offsetLeft;
     };
 
-    const setActiveDot = (activeIndex) => {
-        dots.forEach((dot, i) => {
-            dot.classList.toggle("active", i === activeIndex);
-        });
+    const getMaxScroll = () => scrollContainer.scrollWidth - scrollContainer.clientWidth;
+
+    const updateThumb = () => {
+        const maxScroll = getMaxScroll();
+
+        if (maxScroll <= 0) {
+            thumb.style.width = "100%";
+            thumb.style.left = "0";
+            scrubber.classList.add("scroll-scrubber-disabled");
+            return;
+        }
+
+        scrubber.classList.remove("scroll-scrubber-disabled");
+
+        const trackWidth = scrubber.clientWidth;
+        const thumbWidthRatio = Math.min(1, scrollContainer.clientWidth / scrollContainer.scrollWidth);
+        const thumbWidthPx = Math.max(32, thumbWidthRatio * trackWidth);
+        const maxThumbLeft = Math.max(0, trackWidth - thumbWidthPx);
+        const scrollRatio = scrollContainer.scrollLeft / maxScroll;
+
+        thumb.style.width = `${thumbWidthPx}px`;
+        thumb.style.left = `${scrollRatio * maxThumbLeft}px`;
     };
 
     const scrollToIndex = (index, smooth = true) => {
@@ -95,7 +120,7 @@ projectSections.forEach(section => {
             left,
             behavior: smooth ? "smooth" : "auto",
         });
-        setActiveDot(currentIndex);
+        updateThumb();
     };
 
     const findClosestIndex = () => {
@@ -116,9 +141,8 @@ projectSections.forEach(section => {
     };
 
     const handleScroll = () => {
-        const closestIndex = findClosestIndex();
-        currentIndex = closestIndex;
-        setActiveDot(currentIndex);
+        currentIndex = findClosestIndex();
+        updateThumb();
     };
 
     const stopAutoPlay = () => {
@@ -148,40 +172,75 @@ projectSections.forEach(section => {
         }, 4000); // Change project every 4 seconds
     };
 
-    const createDots = () => {
-        dotsContainer.innerHTML = "";
-        dots = [];
+    // Dragging the thumb scrubs the scroll position directly
+    const onThumbPointerMove = (e) => {
+        if (!isDragging) return;
 
-        projects.forEach((_, index) => {
-            const dot = document.createElement("button");
-            dot.type = "button";
-            dot.className = "dot";
-            dot.setAttribute("aria-label", `Go to project ${index + 1}`);
+        const maxScroll = getMaxScroll();
+        const trackWidth = scrubber.clientWidth;
+        const maxThumbLeft = trackWidth - thumb.offsetWidth;
+        if (maxScroll <= 0 || maxThumbLeft <= 0) return;
 
-            dot.addEventListener("click", () => {
-                stopAutoPlay();
-                scrollToIndex(index);
-                // Restart autoplay after manual selection
-                startAutoPlay();
-            });
-
-            dotsContainer.appendChild(dot);
-            dots.push(dot);
-        });
-
-        setActiveDot(0);
+        const deltaRatio = (e.clientX - dragStartX) / maxThumbLeft;
+        scrollContainer.scrollLeft = dragStartScrollLeft + deltaRatio * maxScroll;
     };
 
-    createDots();
+    const endThumbDrag = (e) => {
+        if (!isDragging) return;
+        isDragging = false;
+        scrubber.classList.remove("dragging");
+        if (e && thumb.hasPointerCapture(e.pointerId)) {
+            thumb.releasePointerCapture(e.pointerId);
+        }
+        currentIndex = findClosestIndex();
+        startAutoPlay();
+    };
+
+    thumb.addEventListener("pointerdown", (e) => {
+        e.preventDefault();
+        stopAutoPlay();
+        isDragging = true;
+        dragStartX = e.clientX;
+        dragStartScrollLeft = scrollContainer.scrollLeft;
+        scrubber.classList.add("dragging");
+        thumb.setPointerCapture(e.pointerId);
+    });
+
+    thumb.addEventListener("pointermove", onThumbPointerMove);
+    thumb.addEventListener("pointerup", endThumbDrag);
+    thumb.addEventListener("pointercancel", endThumbDrag);
+
+    // Clicking/tapping the track jumps the thumb (and scroll) to that spot
+    scrubber.addEventListener("pointerdown", (e) => {
+        if (e.target === thumb || scrubber.classList.contains("scroll-scrubber-disabled")) return;
+
+        const maxScroll = getMaxScroll();
+        const trackWidth = scrubber.clientWidth;
+        const maxThumbLeft = trackWidth - thumb.offsetWidth;
+        if (maxScroll <= 0 || maxThumbLeft <= 0) return;
+
+        const rect = scrubber.getBoundingClientRect();
+        const targetLeft = (e.clientX - rect.left) - thumb.offsetWidth / 2;
+        const clampedRatio = Math.max(0, Math.min(1, targetLeft / maxThumbLeft));
+
+        stopAutoPlay();
+        scrollContainer.scrollTo({ left: clampedRatio * maxScroll, behavior: "smooth" });
+        currentIndex = findClosestIndex();
+        startAutoPlay();
+    });
+
     scrollToIndex(0, false);
 
-    // Keep dots in sync when user scrolls (e.g., touch swipe)
+    // Keep the scrubber thumb in sync when user scrolls (e.g., touch swipe)
     let scrollTimeout;
     scrollContainer.addEventListener("scroll", () => {
         // Throttle updates a bit for smoother behavior
         if (scrollTimeout) cancelAnimationFrame(scrollTimeout);
         scrollTimeout = requestAnimationFrame(handleScroll);
     });
+
+    // Keep the thumb sized correctly if the viewport is resized
+    window.addEventListener("resize", updateThumb);
 
     // Pause autoplay on interaction, resume after
     ["mouseenter", "touchstart"].forEach(evt => {

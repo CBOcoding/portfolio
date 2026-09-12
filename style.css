@@ -248,29 +248,58 @@ nav {
   width: 100%;
 }
 
-.dot-indicators {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  margin: 10px 0 0;
+.scroll-scrubber {
+  position: relative;
+  width: min(240px, 60%);
+  height: 20px;
+  margin: 6px auto 0;
+  cursor: pointer;
 }
 
-.dot-indicators .dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 9999px;
+.scroll-scrubber::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 6px;
+  transform: translateY(-50%);
   background-color: var(--border);
+  border-radius: 9999px;
   opacity: 0.7;
-  transition:
-    background-color 0.25s ease,
-    transform 0.25s ease,
-    opacity 0.25s ease;
+  transition: opacity 0.25s ease;
 }
 
-.dot-indicators .dot.active {
-  background-color: var(--accent);
+.scroll-scrubber:hover::before,
+.scroll-scrubber.dragging::before {
   opacity: 1;
-  transform: scale(1.2);
+}
+
+.scroll-scrubber-thumb {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  height: 10px;
+  min-width: 32px;
+  border-radius: 9999px;
+  background-color: var(--accent);
+  transform: translateY(-50%);
+  cursor: grab;
+  touch-action: none;
+  transition: background-color 0.25s ease, opacity 0.25s ease;
+}
+
+.scroll-scrubber.dragging .scroll-scrubber-thumb {
+  cursor: grabbing;
+}
+
+.scroll-scrubber.scroll-scrubber-disabled {
+  cursor: default;
+  pointer-events: none;
+}
+
+.scroll-scrubber.scroll-scrubber-disabled .scroll-scrubber-thumb {
+  opacity: 0.5;
 }
 
 .scroll-controls {
